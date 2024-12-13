@@ -25,7 +25,7 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
-          context: ./raw-api/
+          context: .
           push: true
           tags: |
             ghcr.io/jmorton95/raw-backend:latest
