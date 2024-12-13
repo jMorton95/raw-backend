@@ -1,0 +1,34 @@
+name: deploy-pipeline
+
+on:
+  push:
+    branches:
+      - "main"
+
+permissions:
+  packages: write
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Login to registry
+        uses: docker/login-action@v3
+        with:
+          registry: https://ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./raw-api/
+          push: true
+          tags: |
+            ghcr.io/jMorton95/raw-backend:latest
+            ghcr.io/jMorton95/raw-backend:${{ github.sha }}
+
+           
