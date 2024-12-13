@@ -28,7 +28,7 @@ jobs:
           context: ./raw-api/
           push: true
           tags: |
-            ghcr.io/jMorton95/raw-backend:latest
-            ghcr.io/jMorton95/raw-backend:${{ github.sha }}
+            ghcr.io/jmorton95/raw-backend:latest
+            ghcr.io/jmorton95/raw-backend:${{ github.sha }}
 
            
