@@ -1,0 +1,38 @@
+table ebay_token {
+  id integer [primary key]
+  token varchar
+  issued_at datetime
+  expires_at datetime
+  expired boolean
+}
+
+table product {
+  id integer [primary key]
+  name varchar
+  description varchar
+  price decimal
+  url varchar
+  quantity integer
+  category varchar
+  active boolean
+  saved_at datetime
+}
+
+table marketing_user {
+  id integer [primary key]
+  email varchar
+  firstname varchar [null]
+  lastname varchar [null]
+  phoneNumber varchar [null]
+  saved_at datetime
+  row_version integer
+}
+
+table contact_form_details {
+  id integer [primary key]
+  message varchar
+  marketing_user_id integer
+  saved_at datetime
+}
+
+Ref: contact_form_details.marketing_user_id > marketing_user.id
