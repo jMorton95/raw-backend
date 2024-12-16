@@ -4,7 +4,8 @@ public static class Endpoints
 {
     public static void MapEndpoints(this WebApplication app)
     {
-        var endpoints = app.MapGroup("api");
+        var endpoints = app.MapGroup("")
+            .MapEndpoint<Health>();
             //RequireRateLimiting()
     }
     

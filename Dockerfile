@@ -1,9 +1,11 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+﻿ARG VERSION=9.0-alpine
+
+FROM mcr.microsoft.com/dotnet/aspnet:$VERSION AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 8080
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:$VERSION AS build
 WORKDIR /src
 COPY ["raw-api/raw-api.csproj", "raw-api/"]
 RUN dotnet restore "raw-api/raw-api.csproj"

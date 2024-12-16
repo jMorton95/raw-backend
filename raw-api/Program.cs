@@ -13,6 +13,9 @@ var app = builder.Build();
 
 app.MapEndpoints();
 
-app.UseHttpsRedirection();
+if (app.Environment.IsProduction())
+{
+    app.UseHttpsRedirection();
+}
 
 app.Run();
