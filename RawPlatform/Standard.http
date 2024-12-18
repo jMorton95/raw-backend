@@ -1,0 +1,6 @@
+@Standard_HostAddress = http://localhost:5025/
+
+GET {{Standard_HostAddress}}/health/
+Accept: application/text
+
+###
