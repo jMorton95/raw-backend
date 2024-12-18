@@ -2,15 +2,8 @@
 
 public class ProductService
 {
-    public class WeatherForecast
-    {
-        public DateOnly Date { get; set; }
-        public int TemperatureC { get; set; }
-        public string? Summary { get; set; }
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-    }
 
-    public async Task<List<WeatherForecast>> GetData()
+    public async Task<List<WeatherForecast>?> GetData()
     {
         await Task.Delay(500);
 
@@ -24,3 +17,11 @@ public class ProductService
         }).ToList();
     }
 }
+public class WeatherForecast
+{
+    public DateOnly Date { get; set; }
+    public int TemperatureC { get; set; }
+    public string? Summary { get; set; }
+    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+}
+

@@ -7,7 +7,9 @@ using RawPlatform.Config;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.ConfigureOptions();
-builder.AddDatabase()
+
+builder
+    .AddDatabase()
     .AddServices();
 
 builder.Services.AddRazorComponents();
