@@ -3,9 +3,9 @@
 public class ProductService
 {
 
-    public async Task<List<WeatherForecast>?> GetData()
+    public async Task<WeatherForecast[]> GetData(int Delay = 0)
     {
-        await Task.Delay(500);
+        await Task.Delay(Delay);
 
         var startDate = DateOnly.FromDateTime(DateTime.Now);
         var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
@@ -14,7 +14,7 @@ public class ProductService
             Date = startDate.AddDays(index),
             TemperatureC = Random.Shared.Next(-20, 55),
             Summary = summaries[Random.Shared.Next(summaries.Length)]
-        }).ToList();
+        }).ToArray();
     }
 }
 public class WeatherForecast

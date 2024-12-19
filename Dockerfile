@@ -2,7 +2,6 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:$VERSION AS base
 WORKDIR /app
-EXPOSE 80
 EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:$VERSION AS build
