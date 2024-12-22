@@ -1,0 +1,40 @@
+version: '3.9'
+services:
+  app:
+    image: ghcr.io/jmorton95/raw-backend:3321df98fdcd5c6c9bf9575a14f6f5357dad14b3
+    secrets:
+      - db-password
+    ports:
+      - "80:8080"
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_SSLMODE=disable
+
+  db:
+    image: postgres:15.2
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+   
+volumes:
+  pgdata: {}
+  letsencrypt:
+
+secrets:
+  db-password:
+    external: true
