@@ -6,8 +6,6 @@ services:
       - db-password
     ports:
       - "80:8080"
-    depends_on:
-      - db
     environment:
       - POSTGRES_HOST=db
       - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
@@ -15,24 +13,31 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_PORT=5432
       - POSTGRES_SSLMODE=disable
+    deploy:
+      update_config:
+        order: start-first
+    depends_on:
+      - db
 
   db:
     image: postgres:15.2
+    secrets:
+    - db-password
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD", "pg_isready" ]
       interval: 10s
       timeout: 5s
       retries: 5
    
 volumes:
-  pgdata: {}
+  db-data:
   letsencrypt:
 
 secrets:
