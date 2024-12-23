@@ -6,6 +6,8 @@ using RawPlatform.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddEnvironmentVariables();
+
 builder.ConfigureOptions();
 
 builder
