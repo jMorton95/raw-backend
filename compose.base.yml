@@ -1,18 +1,13 @@
 version: '3.9'
 services:
   app:
-    image: ghcr.io/jmorton95/raw-backend:3321df98fdcd5c6c9bf9575a14f6f5357dad14b3
+    image: ghcr.io/jmorton95/raw-backend:d25b00ae90e36ce93c5b1cb5291a8c3d1f77460d
     secrets:
       - db-password
     ports:
       - "80:8080"
     environment:
-      - POSTGRES_HOST=db
-      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=postgres
-      - POSTGRES_PORT=5432
-      - POSTGRES_SSLMODE=disable
+       - ConnectionStrings__PostgresConnection=Host=db;Port=5432;Database=postgres;Username=postgres;Password_FILE=/run/secrets/db-password;Include Error Detail=true
     deploy:
       update_config:
         order: start-first
@@ -21,6 +16,7 @@ services:
 
   db:
     image: postgres:15.2
+    user: postgres
     secrets:
     - db-password
     environment:
@@ -35,6 +31,19 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  
+  migrate:
+    image: mcr.microsoft.com/dotnet/sdk:9.0-alpine
+    secrets:
+      - db-password
+    depends_on:
+      - db
+    working_dir: /app
+    volumes:
+      - .:/app
+    environment:
+      - ConnectionStrings__PostgresConnection=Host=db;Port=5432;Database=postgres;Username=postgres;Password_FILE=/run/secrets/db-password;Include Error Detail=true
+    entrypoint: ["dotnet", "ef", "database", "update"]
    
 volumes:
   db-data:
