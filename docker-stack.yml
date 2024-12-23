@@ -50,6 +50,11 @@ services:
   db:
     image: postgres:17.2
     user: postgres
+    labels:
+        - "traefik.enable=true"
+        - "traefik.tcp.routers.postgres.rule=HostSNI(`*`)"
+        - "traefik.tcp.routers.postgres.entrypoints=tcp"
+        - "traefik.tcp.services.postgres.loadbalancer.server.port=5432"
     volumes:
       - db-data:/var/lib/postgresql/data
     secrets:
