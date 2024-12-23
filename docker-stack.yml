@@ -51,7 +51,7 @@ services:
     image: postgres
     user: postgres
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
     secrets:
       - db-password
     environment:
