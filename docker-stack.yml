@@ -35,12 +35,7 @@ services:
     secrets:
       - db-password
     environment:
-      - POSTGRES_HOST=db
-      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=postgres
-      - POSTGRES_PORT=5432
-      - POSTGRES_SSLMODE=disable
+      - ConnectionStrings__PostgresConnection=Host=db;Port=5432;Database=postgres;Username=postgres;Password_FILE=/run/secrets/db-password;Include Error Detail=true
     deploy:
       update_config:
         order: start-first
