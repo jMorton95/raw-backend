@@ -24,7 +24,7 @@ services:
       - letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock
 
-  web:
+  app:
     image: ghcr.io/jmorton95/raw-backend:${GIT_COMMIT_HASH:-latest}
     labels:
       - "traefik.enable=true"
