@@ -11,6 +11,7 @@ services:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entryPoints.tcp.address=:5432"
     ports:
       - mode: host
         protocol: tcp
@@ -36,6 +37,7 @@ services:
       - db-password
     environment:
       - ConnectionStrings__PostgresConnection=Host=db;Port=5432;Database=postgres;Username=postgres;Password_FILE=/run/secrets/db-password;Include Error Detail=true
+      - TestSettings__TestValue=ProductionTest    
     deploy:
       update_config:
         order: start-first
