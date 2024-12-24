@@ -1,7 +1,11 @@
 ﻿@page "/"
+@using Microsoft.Extensions.Options
+@using RawPlatform.Config
+@inject IOptions<TestSettings> Settings
+
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, World!</h1>
+<h1>@Settings.Value.TestValue</h1>
 
 Welcome to your new app.
