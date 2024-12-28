@@ -37,7 +37,7 @@ services:
       - db-password
     environment:
       - ConnectionStrings__PostgresConnection=Host=db;Port=5432;Database=postgres;Username=postgres;Password_FILE=/run/secrets/db-password;Include Error Detail=true
-      - TestSettings__TestValue=ProductionTest    
+      - THIRD_PARTY=${THIRD_PARTY}   
     deploy:
       update_config:
         order: start-first
