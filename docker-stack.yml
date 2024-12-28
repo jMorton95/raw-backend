@@ -21,6 +21,10 @@ services:
         protocol: tcp
         published: 443
         target: 443
+      - mode: host
+        protocol: tcp
+        published: 5432
+        target: 5432
     volumes:
       - letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock
@@ -37,7 +41,7 @@ services:
       - db-password
     environment:
       - ConnectionStrings__PostgresConnection=Host=db;Port=5432;Database=postgres;Username=postgres;Password_FILE=/run/secrets/db-password;Include Error Detail=true
-      - THIRD_PARTY=${THIRD_PARTY}   
+      - THIRD_PARTY=${THIRD_PARTY}
     deploy:
       update_config:
         order: start-first
@@ -48,10 +52,10 @@ services:
     image: postgres:17.2
     user: postgres
     labels:
-        - "traefik.enable=true"
-        - "traefik.tcp.routers.postgres.rule=HostSNI(`*`)"
-        - "traefik.tcp.routers.postgres.entrypoints=tcp"
-        - "traefik.tcp.services.postgres.loadbalancer.server.port=5432"
+      - "traefik.enable=true"
+      - "traefik.tcp.routers.postgres.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.postgres.entrypoints=tcp"
+      - "traefik.tcp.services.postgres.loadbalancer.server.port=5432"
     volumes:
       - db-data:/var/lib/postgresql/data
     secrets:
@@ -60,7 +64,7 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
     healthcheck:
-      test: [ "CMD", "pg_isready" ]
+      test: ["CMD", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5
