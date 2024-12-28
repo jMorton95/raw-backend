@@ -42,8 +42,8 @@ jobs:
       - name: create env file
         run: |
           echo "GIT_COMMIT_HASH=${{ github.sha }}" >> ./envfile
-          echo "DB_PASSWORD"=${{ secrets.DB_PASSWORD }}" >> ./envfile
-          echo "API_KEY"=${{ secrets.API_KEY }}" >> ./envfile
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> ./envfile
+          echo "API_KEY=${{ secrets.API_KEY }}" >> ./envfile
 
       - name: Docker Stack Deploy
         uses: cssnr/stack-deploy-action@v1
