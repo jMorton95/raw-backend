@@ -37,11 +37,13 @@ services:
       - "traefik.http.routers.web.rule=Host(`platform.rawengineering.net`)"
       - "traefik.http.routers.web.entrypoints=websecure"
       - "traefik.http.routers.web.tls.certresolver=myresolver"
-    secrets:
-      - db-password
     environment:
-      - ConnectionStrings__PostgresConnection=Host=db;Port=5432;Database=postgres;Username=postgres;Password_FILE=/run/secrets/db-password;Include Error Detail=true
-      - THIRD_PARTY=${THIRD_PARTY}
+      - DatabaseSettings__Host=db
+      - DatabaseSettings__Port=5432
+      - DatabaseSettings__Database=raw-backend
+      - DatabaseSettings__Username=postgres
+      - DatabaseSettings__Password=${DB_PASSWORD}
+      - ThirdParty__ApiKey=${API_KEY}
     deploy:
       update_config:
         order: start-first

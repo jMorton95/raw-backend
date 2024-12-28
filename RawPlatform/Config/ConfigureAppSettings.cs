@@ -1,15 +1,15 @@
 ﻿namespace RawPlatform.Config;
 
-public class TestSettings()
+public class ThirdParty()
 {
-    public string TestValue { get; set; }
+    public string? ApiKey { get; init; }
 }
+
 
 public static class ConfigureAppSettings
 {
     public static void ConfigureOptions(this WebApplicationBuilder builder)
     {
-      //builder.Services.Configure<ConnectionStringSettings>(builder.Configuration.GetSection("ConnectionString"));
-      builder.Services.Configure<TestSettings>(builder.Configuration.GetSection("TestSettings"));   
+      builder.Services.Configure<ThirdParty>(builder.Configuration.GetSection("ThirdParty"));  
     }
 }
