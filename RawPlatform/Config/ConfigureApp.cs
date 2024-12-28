@@ -9,6 +9,7 @@ public static class ConfigureApp
     {
         var connectionString = builder.Configuration.GetConnectionString("PostgresConnection");
         builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql(connectionString));
+        
         return builder;
     }
 

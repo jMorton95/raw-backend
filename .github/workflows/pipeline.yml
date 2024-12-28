@@ -21,7 +21,7 @@ jobs:
           registry: https://ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
@@ -30,28 +30,26 @@ jobs:
           tags: |
             ghcr.io/jmorton95/raw-backend:latest
             ghcr.io/jmorton95/raw-backend:${{ github.sha }}
-    
+
   deploy:
     runs-on: ubuntu-latest
     needs:
       - build-and-push-image
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: create env file
-      run: |
-        echo "GIT_COMMIT_HASH=${{ github.sha }}" >> ./envfile
-        echo "THIRD_PARTY"=${{ secrets.THIRD_PARTY }} >> ./envfile
+      - name: create env file
+        run: |
+          echo "GIT_COMMIT_HASH=${{ github.sha }}" >> ./envfile
+          echo "THIRD_PARTY"=${{ secrets.THIRD_PARTY }} >> ./envfile
 
-    - name: Docker Stack Deploy
-      uses: cssnr/stack-deploy-action@v1
-      with:
-        name: rawplatform
-        file: docker-stack.yml
-        host: platform.rawengineering.net
-        user: deploy
-        ssh_key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
-        env_file: ./envfile
-
-           
+      - name: Docker Stack Deploy
+        uses: cssnr/stack-deploy-action@v1
+        with:
+          name: rawplatform
+          file: docker-stack.yml
+          host: platform.rawengineering.net
+          user: deploy
+          ssh_key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+          env_file: ./envfile

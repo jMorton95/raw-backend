@@ -3,6 +3,7 @@ global using Microsoft.EntityFrameworkCore;
 using RawPlatform.Api;
 using RawPlatform.Components;
 using RawPlatform.Config;
+using RawPlatform.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,8 @@ if (!app.Environment.IsDevelopment())
 app.UseAntiforgery();
 
 app.MapStaticAssets();
+
+await app.ApplyMigrations();
 
 app.MapRazorComponents<App>();
 
