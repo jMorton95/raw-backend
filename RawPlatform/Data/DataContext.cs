@@ -6,6 +6,8 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
     public DbSet<MarketingUser> MarketingUsers => Set<MarketingUser>();
     public DbSet<FormDetail> FormDetails => Set<FormDetail>();
     
+    public DbSet<LogEntry> LogEntries => Set<LogEntry>();
+    
     
     protected override void OnModelCreating(ModelBuilder modelBuilder) { }
 

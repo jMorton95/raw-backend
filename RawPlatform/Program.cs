@@ -16,8 +16,7 @@ builder
 
 builder.Services.AddRazorComponents();
 
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole(); 
+builder.Services.AddSingleton<ILoggerProvider, LoggerProvider>();
 
 var app = builder.Build();
 
@@ -26,8 +25,6 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
     app.UseHsts();
 }
-
-//app.UseAntiforgery();
 
 app.MapStaticAssets();
 

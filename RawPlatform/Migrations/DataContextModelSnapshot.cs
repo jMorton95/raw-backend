@@ -8,7 +8,7 @@ using RawPlatform.Data;
 
 #nullable disable
 
-namespace RAWAPI.Migrations
+namespace RawPlatform.Migrations
 {
     [DbContext(typeof(DataContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace RAWAPI.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("RAWAPI.Data.CommerceToken", b =>
+            modelBuilder.Entity("RawPlatform.Data.CommerceToken", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,7 +51,7 @@ namespace RAWAPI.Migrations
                     b.ToTable("CommerceTokens");
                 });
 
-            modelBuilder.Entity("RAWAPI.Data.FormDetail", b =>
+            modelBuilder.Entity("RawPlatform.Data.FormDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,7 +64,8 @@ namespace RAWAPI.Migrations
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
 
                     b.Property<int>("RowVersion")
                         .HasColumnType("integer");
@@ -79,7 +80,33 @@ namespace RAWAPI.Migrations
                     b.ToTable("FormDetails");
                 });
 
-            modelBuilder.Entity("RAWAPI.Data.MarketingUser", b =>
+            modelBuilder.Entity("RawPlatform.Data.LogEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("LogLevel")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Message")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<int>("RowVersion")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("SavedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LogEntries");
+                });
+
+            modelBuilder.Entity("RawPlatform.Data.MarketingUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -88,16 +115,20 @@ namespace RAWAPI.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("EmailAddress")
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("text");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("text");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("RowVersion")
                         .HasColumnType("integer");
@@ -110,9 +141,9 @@ namespace RAWAPI.Migrations
                     b.ToTable("MarketingUsers");
                 });
 
-            modelBuilder.Entity("RAWAPI.Data.FormDetail", b =>
+            modelBuilder.Entity("RawPlatform.Data.FormDetail", b =>
                 {
-                    b.HasOne("RAWAPI.Data.MarketingUser", "MarketingUser")
+                    b.HasOne("RawPlatform.Data.MarketingUser", "MarketingUser")
                         .WithMany("FormDetails")
                         .HasForeignKey("MarketingUserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -121,7 +152,7 @@ namespace RAWAPI.Migrations
                     b.Navigation("MarketingUser");
                 });
 
-            modelBuilder.Entity("RAWAPI.Data.MarketingUser", b =>
+            modelBuilder.Entity("RawPlatform.Data.MarketingUser", b =>
                 {
                     b.Navigation("FormDetails");
                 });
