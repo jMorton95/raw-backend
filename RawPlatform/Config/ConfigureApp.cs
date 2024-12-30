@@ -12,7 +12,6 @@ public static class ConfigureApp
         var connectionString =
             $"Host={dbSettings?.Host};Port={dbSettings?.Port};Database={dbSettings?.Database};Username={dbSettings?.Username};Password={dbSettings?.Password};Include Error Detail=true";
         builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql(connectionString));
-      
         
         return builder;
     }
@@ -20,6 +19,7 @@ public static class ConfigureApp
     public static WebApplicationBuilder AddServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<ProductService>();
+        builder.Services.AddScoped<EbayChallengeService>();
         return builder;
     }
     

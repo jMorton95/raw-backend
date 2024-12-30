@@ -9,17 +9,22 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddEnvironmentVariables();
 
-builder.ConfigureOptions();
-
 builder
+    .AddOptions()
     .AddDatabase()
     .AddServices();
 
 builder.Services.AddRazorComponents();
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.Logging.ClearProviders();
+    builder.Logging.AddConsole(); 
+}
+
+
 
 var app = builder.Build();
-
 
 if (!app.Environment.IsDevelopment())
 {

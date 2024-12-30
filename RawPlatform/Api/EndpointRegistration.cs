@@ -1,4 +1,5 @@
 ﻿using RawPlatform.Api.Endpoints;
+using RawPlatform.Api.Endpoints.External;
 
 namespace RawPlatform.Api;
 
@@ -11,8 +12,10 @@ public static class EndpointRegistration
 {
     public static void MapEndpoints(this WebApplication app)
     {
-        app.MapGroup("api").MapEndpoint<Health>();
-            //RequireRateLimiting()
+        app.MapGroup("api")
+            .MapEndpoint<Health>()
+            .MapEndpoint<EbayChallenge>()
+            .MapEndpoint<EbayNotification>();
     }
     
     private static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder app) where TEndpoint : IEndpoint

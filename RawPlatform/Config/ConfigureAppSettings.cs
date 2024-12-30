@@ -1,15 +1,13 @@
-﻿namespace RawPlatform.Config;
+﻿using RawPlatform.Config.Models;
 
-public class ThirdParty()
-{
-    public string? ApiKey { get; init; }
-}
+namespace RawPlatform.Config;
 
 
 public static class ConfigureAppSettings
 {
-    public static void ConfigureOptions(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddOptions(this WebApplicationBuilder builder)
     {
-      builder.Services.Configure<ThirdParty>(builder.Configuration.GetSection("ThirdParty"));  
+       builder.Services.Configure<ThirdParty>(builder.Configuration.GetSection("ThirdParty"));
+       return builder;
     }
 }

@@ -44,6 +44,8 @@ jobs:
           echo "GIT_COMMIT_HASH=${{ github.sha }}" >> ./envfile
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" | sed 's/</\\</g' >> ./envfile
           echo "API_KEY=${{ secrets.API_KEY }}" >> ./envfile
+          echo "VALIDATION_TOKEN=${{ secrets.VALIDATION_TOKEN }}" >> ./envfile
+          echo "HOSTED_ENDPOINT=${{ secrets.HOSTED_ENDPOINT }}" >> ./envfile
 
       - name: Docker Stack Deploy
         uses: cssnr/stack-deploy-action@v1
