@@ -15,6 +15,8 @@ public class EbayChallengeService(IOptions<ThirdParty> apiSettings)
             throw new ArgumentException("Invalid Configuration");   
         }
         
+        Console.WriteLine($"ChallengeCode: {challengeCode} Token:{_apiSettings.ValidationToken} HostedEndpoint: {_apiSettings.HostedEndpoint}");
+        
         var challengeHash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256); 
         challengeHash.AppendData(Encoding.UTF8.GetBytes(challengeCode)); 
         challengeHash.AppendData(Encoding.UTF8.GetBytes(_apiSettings.ValidationToken)); 
