@@ -14,8 +14,8 @@ public static class EndpointRegistration
     {
         app.MapGroup("api")
             .MapEndpoint<Health>()
-            .MapEndpoint<EbayChallenge>();
-            //RequireRateLimiting()
+            .MapEndpoint<EbayChallenge>()
+            .MapEndpoint<EbayNotification>();
     }
     
     private static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder app) where TEndpoint : IEndpoint
