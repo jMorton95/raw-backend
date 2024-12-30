@@ -16,11 +16,8 @@ builder
 
 builder.Services.AddRazorComponents();
 
-if (builder.Environment.IsDevelopment())
-{
-    builder.Logging.ClearProviders();
-    builder.Logging.AddConsole(); 
-}
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole(); 
 
 var app = builder.Build();
 
@@ -30,7 +27,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseAntiforgery();
+//app.UseAntiforgery();
 
 app.MapStaticAssets();
 
