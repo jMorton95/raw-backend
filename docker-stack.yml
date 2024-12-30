@@ -44,6 +44,8 @@ services:
       - DatabaseSettings__Username=postgres
       - DatabaseSettings__Password=${DB_PASSWORD}
       - ThirdParty__ApiKey=${API_KEY}
+      - ThirdParty__ValidationToken=${VALIDATION_TOKEN}
+      - ThirdParty__HostedEndpoint=${HOSTED_ENDPOINT}
     deploy:
       update_config:
         order: start-first

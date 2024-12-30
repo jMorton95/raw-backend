@@ -19,6 +19,7 @@ public static class ConfigureApp
     public static WebApplicationBuilder AddServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<ProductService>();
+        builder.Services.AddScoped<EbayChallengeService>();
         return builder;
     }
     
