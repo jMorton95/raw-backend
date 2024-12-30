@@ -1,9 +1,6 @@
-﻿namespace RawPlatform.Config;
+﻿using RawPlatform.Config.Models;
 
-public class ThirdParty()
-{
-    public string? ApiKey { get; init; }
-}
+namespace RawPlatform.Config;
 
 
 public static class ConfigureAppSettings
