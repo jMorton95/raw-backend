@@ -16,8 +16,6 @@ builder
 
 builder.Services.AddRazorComponents();
 
-builder.Services.AddSingleton<ILoggerProvider, LoggerProvider>();
-
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

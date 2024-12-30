@@ -56,4 +56,7 @@ public class LogEntry : Entity
     
     [StringLength(255)]
     public string? Message { get; set; }
+    
+    [StringLength(1000)]
+    public string? Exception { get; set; }
 }

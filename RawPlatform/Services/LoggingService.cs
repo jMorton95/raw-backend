@@ -2,43 +2,23 @@
 
 namespace RawPlatform.Services;
 
-public class LoggingService(string categoryName, IServiceProvider serviceProvider) : ILogger
+public class DatabaseLoggingService(DataContext db)
 {
-    private readonly string _categoryName = categoryName;
+    public async Task LogInformation<TClass>(string message) => await Log<TClass>(LogLevel.Information, message);
+    public async Task LogDebug<TClass>(string message) => await Log<TClass>(LogLevel.Debug, message);
+    public async Task LogCritical<TClass>(string message, Exception? ex = null) => await Log<TClass>(LogLevel.Debug, message, ex);
 
-    public IDisposable BeginScope<TState>(TState state) => null!;
-
-    public bool IsEnabled(LogLevel logLevel) => logLevel >= LogLevel.Information;
-
-    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+    public async Task LogError<TClass>(string message, Exception ex) => await Log<TClass>(LogLevel.Error, message, ex);
+    private async Task Log<TClass>(LogLevel level, string message, Exception? ex = null)
     {
-        if (!IsEnabled(logLevel)) return;
-
-        var message = formatter(state, exception);
-        using var scope = serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<DataContext>();
-
-        context.LogEntries.Add(new LogEntry
+        db.LogEntries.Add(new LogEntry
         {
-            LogLevel = logLevel,
-            Message = message
+            LogLevel = level,
+            Message = $"[{typeof(TClass).Name}] {message}",
+            Exception = ex?.ToString() ?? null,
+            SavedAt = DateTime.UtcNow
         });
 
-        context.SaveChanges();
+        await db.SaveChangesAsync();
     }
-}
-
-public class LoggerProvider : ILoggerProvider
-{
-    private readonly IServiceProvider _serviceProvider;
-
-    public LoggerProvider(IServiceProvider serviceProvider)
-    {
-        _serviceProvider = serviceProvider;
-    }
-
-    public ILogger CreateLogger(string categoryName) =>
-        new LoggingService(categoryName, _serviceProvider);
-
-    public void Dispose() { }
 }
