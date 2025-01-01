@@ -20,6 +20,7 @@ public static class ConfigureApp
     {
         builder.Services.AddScoped<ProductService>();
         builder.Services.AddScoped<EbayChallengeService>();
+        builder.Services.AddScoped<DatabaseLoggingService>();
         return builder;
     }
     

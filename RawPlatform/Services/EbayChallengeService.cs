@@ -5,22 +5,26 @@ using RawPlatform.Config.Models;
 
 namespace RawPlatform.Services;
 
-public class EbayChallengeService(IOptions<ThirdParty> apiSettings)
+public class EbayChallengeService(IOptions<ThirdParty> apiSettings, DatabaseLoggingService logger)
 {
     private readonly ThirdParty _apiSettings = apiSettings.Value;
-    public string VerifyChallenge(string challengeCode)
+    public async Task<string> VerifyChallenge(string challengeCode)
     {
         if (_apiSettings.ValidationToken is null || _apiSettings.HostedEndpoint is null)
         {
-            throw new ArgumentException("Invalid Configuration");   
+            await logger.LogCritical<EbayChallengeService>("Invalid Configuration - ValidationToken or HostedEndpoint is null");
+            throw new ArgumentException("Invalid Configuration");
         }
-        
-        Console.WriteLine($"ChallengeCode: {challengeCode} Token:{_apiSettings.ValidationToken} HostedEndpoint: {_apiSettings.HostedEndpoint}");
         
         var challengeHash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256); 
         challengeHash.AppendData(Encoding.UTF8.GetBytes(challengeCode)); 
         challengeHash.AppendData(Encoding.UTF8.GetBytes(_apiSettings.ValidationToken)); 
-        challengeHash.AppendData(Encoding.UTF8.GetBytes(_apiSettings.HostedEndpoint)); 
-        return Convert.ToHexStringLower(challengeHash.GetHashAndReset());
+        challengeHash.AppendData(Encoding.UTF8.GetBytes(_apiSettings.HostedEndpoint));
+        
+        var challengeString = Convert.ToHexStringLower(challengeHash.GetHashAndReset());
+        
+        await logger.LogInformation<EbayChallengeService>($"Verify challenge: {challengeString}");
+        
+        return challengeString;
     }
 }

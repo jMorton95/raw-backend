@@ -27,12 +27,16 @@ public class CommerceToken : Entity
 
 public class MarketingUser : Entity
 {
+    [StringLength(100)]
     public string? EmailAddress { get; set; }
     
+    [StringLength(30)]
     public string? FirstName { get; set; }
     
+    [StringLength(30)]
     public string? LastName { get; set; }
     
+    [StringLength(50)]
     public string? PhoneNumber { get; set; }
     
     public ICollection<FormDetail>? FormDetails { get; set; }
@@ -40,7 +44,19 @@ public class MarketingUser : Entity
 
 public class FormDetail : Entity
 {
+    [StringLength(1000)]
     public required string Message { get; set; }
     
     public MarketingUser MarketingUser { get; set; }
+}
+
+public class LogEntry : Entity
+{
+    public LogLevel LogLevel { get; set; }
+    
+    [StringLength(255)]
+    public string? Message { get; set; }
+    
+    [StringLength(1000)]
+    public string? Exception { get; set; }
 }

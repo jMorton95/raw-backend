@@ -14,10 +14,9 @@ builder
     .AddDatabase()
     .AddServices();
 
-builder.Services.AddRazorComponents();
+builder.Services.AddAntiforgery();
 
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole(); 
+builder.Services.AddRazorComponents();
 
 var app = builder.Build();
 
@@ -27,11 +26,11 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-//app.UseAntiforgery();
-
 app.MapStaticAssets();
 
 await app.ApplyMigrations();
+
+app.UseAntiforgery();
 
 app.MapRazorComponents<App>();
 
