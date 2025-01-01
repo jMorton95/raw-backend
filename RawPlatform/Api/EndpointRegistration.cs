@@ -1,4 +1,5 @@
-﻿using RawPlatform.Api.Endpoints;
+﻿using Microsoft.AspNetCore.Mvc;
+using RawPlatform.Api.Endpoints;
 using RawPlatform.Api.Endpoints.External;
 
 namespace RawPlatform.Api;
@@ -12,10 +13,13 @@ public static class EndpointRegistration
 {
     public static void MapEndpoints(this WebApplication app)
     {
-        app.MapGroup("api")
-            .MapEndpoint<Health>()
-            .MapEndpoint<EbayChallenge>()
-            .MapEndpoint<EbayNotification>();
+        var api = app.MapGroup("api/")
+            .MapEndpoint<Health>();
+            
+        api.MapGroup("third-party/")
+            .WithMetadata(new IgnoreAntiforgeryTokenAttribute())
+                .MapEndpoint<EbayChallenge>()
+                .MapEndpoint<EbayNotification>();
     }
     
     private static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder app) where TEndpoint : IEndpoint

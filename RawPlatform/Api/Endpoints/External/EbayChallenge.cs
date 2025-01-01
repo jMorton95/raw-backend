@@ -7,7 +7,7 @@ public class EbayChallenge : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
     {
-        app.MapGet("/third-party/challenge", Handler);
+        app.MapGet("/challenge", Handler);
     }
 
     private static async Task<Results<Ok<Response>, InternalServerError>> Handler(

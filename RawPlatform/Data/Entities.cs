@@ -54,9 +54,9 @@ public class LogEntry : Entity
 {
     public LogLevel LogLevel { get; set; }
     
-    [StringLength(255)]
+    [MaxLength(int.MaxValue)]
     public string? Message { get; set; }
     
-    [StringLength(1000)]
+    [MaxLength(int.MaxValue)]
     public string? Exception { get; set; }
 }

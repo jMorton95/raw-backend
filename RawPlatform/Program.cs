@@ -30,6 +30,8 @@ app.MapStaticAssets();
 
 await app.ApplyMigrations();
 
+app.UseAntiforgery();
+
 app.MapRazorComponents<App>();
 
 app.MapEndpoints();
