@@ -45,6 +45,7 @@ jobs:
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" | sed 's/</\\</g' >> ./envfile
           echo "API_CLIENT_ID=${{ secrets.API_CLIENT_ID }}" >> ./envfile
           echo "API_CLIENT_SECRET=${{ secrets.API_CLIENT_SECRET }}" >> ./envfile
+          echo "API_CLIENT_AUTH_URL=${{ secrets.API_CLIENT_AUTH_URL }}" >> ./envfile
           echo "VALIDATION_TOKEN=${{ secrets.VALIDATION_TOKEN }}" >> ./envfile
           echo "HOSTED_ENDPOINT=${{ secrets.HOSTED_ENDPOINT }}" >> ./envfile
           echo "ELECTED_SELLER_ID=${{ secrets.ELECTED_SELLER_ID }}" >> ./envfile

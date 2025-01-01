@@ -45,6 +45,7 @@ services:
       - DatabaseSettings__Password=${DB_PASSWORD}
       - ThirdParty__ApiClientId=${API_CLIENT_ID}
       - ThirdParty__ApiClientSecret=${API_CLIENT_SECRET}
+      - ThirdParty__ApiClientAuthUrl=${API_CLIENT_AUTH_URL}
       - ThirdParty__ValidationToken=${VALIDATION_TOKEN}
       - ThirdParty__HostedEndpoint=${HOSTED_ENDPOINT}
       - ThirdParty__ElectedSellerId=${ELECTED_SELLER_ID}
