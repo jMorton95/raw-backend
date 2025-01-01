@@ -3,16 +3,16 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using RawPlatform.Config.Models;
 
-namespace RawPlatform.Services;
+namespace RawPlatform.Modules;
 
-public class EbayChallengeService(IOptions<ThirdParty> apiSettings, DatabaseLoggingService logger)
+public class EbayChallenge(IOptions<ThirdParty> apiSettings, DatabaseLoggingService logger)
 {
     private readonly ThirdParty _apiSettings = apiSettings.Value;
     public async Task<string> VerifyChallenge(string challengeCode)
     {
         if (_apiSettings.ValidationToken is null || _apiSettings.HostedEndpoint is null)
         {
-            await logger.LogCritical<EbayChallengeService>("Invalid Configuration - ValidationToken or HostedEndpoint is null");
+            await logger.LogCritical<EbayChallenge>("Invalid Configuration - ValidationToken or HostedEndpoint is null");
             throw new ArgumentException("Invalid Configuration");
         }
         
@@ -23,7 +23,7 @@ public class EbayChallengeService(IOptions<ThirdParty> apiSettings, DatabaseLogg
         
         var challengeString = Convert.ToHexStringLower(challengeHash.GetHashAndReset());
         
-        await logger.LogInformation<EbayChallengeService>($"Verify challenge: {challengeString}");
+        await logger.LogInformation<EbayChallenge>($"Verify challenge: {challengeString}");
         
         return challengeString;
     }

@@ -43,9 +43,16 @@ jobs:
         run: |
           echo "GIT_COMMIT_HASH=${{ github.sha }}" >> ./envfile
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" | sed 's/</\\</g' >> ./envfile
-          echo "API_KEY=${{ secrets.API_KEY }}" >> ./envfile
+          echo "API_CLIENT_ID=${{ secrets.API_CLIENT_ID }}" >> ./envfile
+          echo "API_CLIENT_SECRET=${{ secrets.API_CLIENT_SECRET }}" >> ./envfile
           echo "VALIDATION_TOKEN=${{ secrets.VALIDATION_TOKEN }}" >> ./envfile
           echo "HOSTED_ENDPOINT=${{ secrets.HOSTED_ENDPOINT }}" >> ./envfile
+          echo "ELECTED_SELLER_ID=${{ secrets.ELECTED_SELLER_ID }}" >> ./envfile
+          echo "PRODUCT_QUERY_URL=${{ secrets.PRODUCT_QUERY_URL }}" >> ./envfile
+          echo "PRODUCT_FILTER_STRING=${{ secrets.PRODUCT_FILTER_STRING }}" | sed 's/[<>]/\\&/g' >> ./envfile
+          echo "PRODUCT_MARKETPLACE_ID=${{ secrets.PRODUCT_MARKETPLACE_ID }}" >> ./envfile
+          echo "GRANT_TYPE=${{ secrets.GRANT_TYPE }}" >> ./envfile
+          echo "SCOPES=${{ secrets.SCOPES }}" >> ./envfile
 
       - name: Docker Stack Deploy
         uses: cssnr/stack-deploy-action@v1

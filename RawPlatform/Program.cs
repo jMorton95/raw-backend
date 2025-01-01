@@ -3,7 +3,7 @@ global using Microsoft.EntityFrameworkCore;
 using RawPlatform.Api;
 using RawPlatform.Components;
 using RawPlatform.Config;
-using RawPlatform.Services;
+using RawPlatform.Modules;
 
 var builder = WebApplication.CreateBuilder(args);
 

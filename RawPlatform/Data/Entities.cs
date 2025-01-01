@@ -60,3 +60,34 @@ public class LogEntry : Entity
     [MaxLength(int.MaxValue)]
     public string? Exception { get; set; }
 }
+
+public class Product : Entity
+{
+    public string EbayId { get; set; }
+    
+    public decimal EbayPrice { get; set; }
+    
+    public decimal? DiscountedPrice { get; set; }
+    
+    public int Quantity { get; set; }
+
+    public string Title { get; set; }
+    
+    public string ConditionDescription { get; set; }
+    
+    public DateTime ListingDate { get; set; }
+    
+    public string ItemWebUrl { get; set; }
+    
+    public string ItemApiUrl { get; set; }
+    
+    public int EstimatedAlreadySold { get; set; }
+    
+    public ICollection<ProductImage> ProductImages { get; set; }
+}
+
+public class ProductImage : Entity
+{
+    public string Base64Image { get; set; }
+    public string ImageUrl { get; set; }
+}

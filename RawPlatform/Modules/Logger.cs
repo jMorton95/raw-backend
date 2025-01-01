@@ -1,6 +1,6 @@
 ﻿using RawPlatform.Data;
 
-namespace RawPlatform.Services;
+namespace RawPlatform.Modules;
 
 public class DatabaseLoggingService(DataContext db)
 {
