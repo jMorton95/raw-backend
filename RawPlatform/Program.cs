@@ -14,6 +14,8 @@ builder
     .AddDatabase()
     .AddServices();
 
+builder.Services.AddAntiforgery();
+
 builder.Services.AddRazorComponents();
 
 var app = builder.Build();
@@ -27,6 +29,8 @@ if (!app.Environment.IsDevelopment())
 app.MapStaticAssets();
 
 await app.ApplyMigrations();
+
+app.UseAntiforgery();
 
 app.MapRazorComponents<App>();
 

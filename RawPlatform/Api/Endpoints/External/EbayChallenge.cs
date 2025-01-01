@@ -10,16 +10,19 @@ public class EbayChallenge : IEndpoint
         app.MapGet("/third-party/challenge", Handler);
     }
 
-    private static Results<Ok<Response>, InternalServerError> Handler([FromQuery] string challenge_code, [FromServices] EbayChallengeService service)
+    private static async Task<Results<Ok<Response>, InternalServerError>> Handler(
+        [FromQuery] string challenge_code,
+        [FromServices] EbayChallengeService service,
+        [FromServices] DatabaseLoggingService logger)
     {
         try
         {
-            var challengeResponse = service.VerifyChallenge(challenge_code);
+            var challengeResponse = await service.VerifyChallenge(challenge_code);
             return TypedResults.Ok(new Response(challengeResponse));
         }
         catch (Exception ex)
         {
-            //TODO: Logger
+            await logger.LogCritical<EbayChallenge>("Failed to verify EbayChallenge", ex);
             return TypedResults.InternalServerError();
         }
     }
