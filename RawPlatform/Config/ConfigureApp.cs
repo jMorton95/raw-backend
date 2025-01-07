@@ -18,9 +18,10 @@ public static class ConfigureApp
 
     public static WebApplicationBuilder AddServices(this WebApplicationBuilder builder)
     {
+        builder.Services.AddHttpClient();
         builder.Services.AddScoped<DatabaseLoggingService>();
-        builder.Services.AddScoped<ProductApiAuthenticator>();
-        builder.Services.AddScoped<ProductEtl>();
+        builder.Services.AddScoped<IProductApiAuthenticator, ProductApiAuthenticator>();
+        builder.Services.AddScoped<IProductEtl, ProductEtl>();
         builder.Services.AddScoped<EbayChallenge>();
         return builder;
     }

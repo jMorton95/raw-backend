@@ -18,8 +18,8 @@ public static class EndpointRegistration
             
         api.MapGroup("third-party/")
             .WithMetadata(new IgnoreAntiforgeryTokenAttribute())
-                .MapEndpoint<EbayChallenge>()
-                .MapEndpoint<EbayNotification>();
+                .MapEndpoint<Challenge>()
+                .MapEndpoint<Notification>();
     }
     
     private static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder app) where TEndpoint : IEndpoint

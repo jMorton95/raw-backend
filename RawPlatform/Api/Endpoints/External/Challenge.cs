@@ -3,7 +3,7 @@ using RawPlatform.Modules;
 
 namespace RawPlatform.Api.Endpoints.External;
 
-public class EbayChallenge : IEndpoint
+public class Challenge : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
     {
@@ -12,7 +12,7 @@ public class EbayChallenge : IEndpoint
 
     private static async Task<Results<Ok<Response>, InternalServerError>> Handler(
         [FromQuery] string challenge_code,
-        [FromServices] Modules.EbayChallenge service,
+        [FromServices] EbayChallenge service,
         [FromServices] DatabaseLoggingService logger)
     {
         try

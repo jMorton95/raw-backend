@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using System.Text;
 using Microsoft.Extensions.Options;
 using RawPlatform.Common.External;
 using RawPlatform.Config.Models;
@@ -18,27 +19,14 @@ public interface IProductApiAuthenticator
     Task<bool> SaveOAuthToken(AuthTokenResponse token);
 }
 
-public class ProductApiAuthenticator : IProductApiAuthenticator
+public class ProductApiAuthenticator(
+    IOptions<ThirdParty> settings,
+    DataContext db,
+    HttpClient httpClient,
+    DatabaseLoggingService logger)
+    : IProductApiAuthenticator
 {
-    private readonly ThirdParty _settings;
-    private readonly DataContext _db;
-    private readonly HttpClient _httpClient;
-    private readonly DatabaseLoggingService _logger;
-    
-    public ProductApiAuthenticator(
-        IOptions<ThirdParty> settings,
-        DataContext db,
-        HttpClient httpClient,
-        DatabaseLoggingService logger)
-    {
-        httpClient.DefaultRequestHeaders.Authorization
-            = new AuthenticationHeaderValue($"Basic {settings.Value.ApiClientId}: {settings.Value.ApiClientSecret}");
-        _settings = settings.Value;
-        _db = db;
-        _httpClient = httpClient;
-        _logger = logger;
-    }
-
+    private readonly ThirdParty _settings = settings.Value;
 
     public async Task<string?> GetOAuthToken()
     {
@@ -57,9 +45,9 @@ public class ProductApiAuthenticator : IProductApiAuthenticator
 
     public async Task<(bool, string?)> TryGetDatabaseToken()
     {
-        var token = await _db.CommerceTokens.LastOrDefaultAsync();
+        var token = await db.CommerceTokens.OrderByDescending(x => x.Id).LastOrDefaultAsync();
         
-        var result = token != null && token.Expires < DateTime.UtcNow;
+        var result = token != null && token.Expires > DateTime.UtcNow;
 
         return (result, token?.Token);
     }
@@ -68,6 +56,10 @@ public class ProductApiAuthenticator : IProductApiAuthenticator
     {
         try
         {
+            httpClient.DefaultRequestHeaders.Authorization
+                = new AuthenticationHeaderValue("Basic",
+                    Convert.ToBase64String(Encoding.ASCII.GetBytes($"{_settings.ApiClientId}:{_settings.ApiClientSecret}")));
+            
             var content = new Dictionary<string, string>{
                 {"grant_type", $"{_settings.GrantType}"},
                 {"scopes", $"{_settings.Scopes}"}
@@ -75,17 +67,17 @@ public class ProductApiAuthenticator : IProductApiAuthenticator
         
             var form = new FormUrlEncodedContent(content);
         
-            var response = await _httpClient.PostAsync($"{_settings.ApiClientAuthUrl}", form);
+            var response = await httpClient.PostAsync($"{_settings.ApiClientAuthUrl}", form);
         
             var responseObject = await response.Content.ReadFromJsonAsync<AuthTokenResponse>();
             
-            await _logger.LogInformation<ProductApiAuthenticator>("Successfully Fetched OAuth token");
+            await logger.LogInformation<ProductApiAuthenticator>("Successfully Fetched OAuth token");
             
             return responseObject;
         }
         catch (Exception ex)
         {
-            await _logger.LogError<ProductApiAuthenticator>("Failed to fetch OAuth token", ex);
+            await logger.LogError<ProductApiAuthenticator>("Failed to fetch OAuth token", ex);
             return null;
         }
         
@@ -100,8 +92,8 @@ public class ProductApiAuthenticator : IProductApiAuthenticator
             Expires = DateTime.UtcNow.AddSeconds(token.ExpiresIn),
         };
         
-        await _db.CommerceTokens.AddAsync(dbToken);
+        await db.CommerceTokens.AddAsync(dbToken);
 
-        return await _db.SaveChangesAsync() > 0;
+        return await db.SaveChangesAsync() > 0;
     }
 }
