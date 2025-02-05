@@ -1,5 +1,5 @@
 ﻿using RawPlatform.Data;
-using RawPlatform.Services;
+using RawPlatform.Modules;
 
 namespace RawPlatform.Config;
 
@@ -18,9 +18,11 @@ public static class ConfigureApp
 
     public static WebApplicationBuilder AddServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<ProductService>();
-        builder.Services.AddScoped<EbayChallengeService>();
+        builder.Services.AddHttpClient();
         builder.Services.AddScoped<DatabaseLoggingService>();
+        builder.Services.AddScoped<IProductApiAuthenticator, ProductApiAuthenticator>();
+        builder.Services.AddScoped<IProductEtl, ProductEtl>();
+        builder.Services.AddScoped<EbayChallenge>();
         return builder;
     }
     

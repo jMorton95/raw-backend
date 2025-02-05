@@ -1,8 +1,8 @@
 ﻿using RawPlatform.Data;
 
-namespace RawPlatform.Services;
+namespace RawPlatform.Modules;
 
-public static class MigrationService
+public static class Migrator
 {
     public static async Task ApplyMigrations(this WebApplication app)
     {

@@ -43,9 +43,17 @@ services:
       - DatabaseSettings__Database=raw-backend
       - DatabaseSettings__Username=postgres
       - DatabaseSettings__Password=${DB_PASSWORD}
-      - ThirdParty__ApiKey=${API_KEY}
+      - ThirdParty__ApiClientId=${API_CLIENT_ID}
+      - ThirdParty__ApiClientSecret=${API_CLIENT_SECRET}
+      - ThirdParty__ApiClientAuthUrl=${API_CLIENT_AUTH_URL}
       - ThirdParty__ValidationToken=${VALIDATION_TOKEN}
       - ThirdParty__HostedEndpoint=${HOSTED_ENDPOINT}
+      - ThirdParty__ElectedSellerId=${ELECTED_SELLER_ID}
+      - ThirdParty__ProductQueryUrl=${PRODUCT_QUERY_URL}
+      - ThirdParty__ProductFilterString=${PRODUCT_FILTER_STRING}
+      - ThirdParty__ProductMarketplaceId=${PRODUCT_MARKETPLACE_ID}
+      - ThirdParty__GrantType=${GRANT_TYPE}
+      - ThirdParty__Scopes=${SCOPES}
     deploy:
       update_config:
         order: start-first
