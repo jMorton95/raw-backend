@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using RawPlatform.Modules;
 
 namespace RawPlatform.Data;
 
@@ -84,10 +86,15 @@ public class Product : Entity
     public int EstimatedAlreadySold { get; set; }
     
     public ICollection<ProductImage> ProductImages { get; set; }
+
+    
 }
 
 public class ProductImage : Entity
 {
     public string Base64Image { get; set; }
     public string ImageUrl { get; set; }
+    
+    public string ProductId { get; set; }
+    public Product Product { get; set; }
 }

@@ -8,6 +8,7 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
     
     public DbSet<LogEntry> LogEntries => Set<LogEntry>();
     
+    public DbSet<Product> Products => Set<Product>();
     
     protected override void OnModelCreating(ModelBuilder modelBuilder) { }
 
