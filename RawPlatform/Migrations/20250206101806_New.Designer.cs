@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RawPlatform.Data;
@@ -11,9 +12,11 @@ using RawPlatform.Data;
 namespace RawPlatform.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250206101806_New")]
+    partial class New
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,14 +184,6 @@ namespace RawPlatform.Migrations
                     b.Property<DateTime>("ListingDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("ProductImageBase64")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProductImageUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
@@ -207,6 +202,42 @@ namespace RawPlatform.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("RawPlatform.Data.ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Base64Image")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("ProductId1")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RowVersion")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("SavedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId1");
+
+                    b.ToTable("ProductImage");
+                });
+
             modelBuilder.Entity("RawPlatform.Data.FormDetail", b =>
                 {
                     b.HasOne("RawPlatform.Data.MarketingUser", "MarketingUser")
@@ -218,9 +249,25 @@ namespace RawPlatform.Migrations
                     b.Navigation("MarketingUser");
                 });
 
+            modelBuilder.Entity("RawPlatform.Data.ProductImage", b =>
+                {
+                    b.HasOne("RawPlatform.Data.Product", "Product")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("RawPlatform.Data.MarketingUser", b =>
                 {
                     b.Navigation("FormDetails");
+                });
+
+            modelBuilder.Entity("RawPlatform.Data.Product", b =>
+                {
+                    b.Navigation("ProductImages");
                 });
 #pragma warning restore 612, 618
         }

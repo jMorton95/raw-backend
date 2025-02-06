@@ -1,8 +1,6 @@
-﻿namespace RawPlatform.Common.External;
+﻿using System.Text.Json.Serialization;
 
-using System;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
+namespace RawPlatform.Common.External.EbaySearchModels;
 
 public class EbaySearchResponse
 {

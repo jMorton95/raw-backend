@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RawPlatform.Data;
 using RawPlatform.Modules;
 
 namespace RawPlatform.Api.Endpoints.Products;
@@ -11,11 +12,11 @@ public class GetAll : IEndpoint
     }
     
     private static async Task<Ok<Response>> Handler(
-        [FromServices] IProductEtl productEtl)
+        DataContext db)
     {
-        var res = await productEtl.ProcessEbayProducts();
-        return TypedResults.Ok(new Response("token"));
+        var products = await db.Products.ToListAsync();
+        return TypedResults.Ok(new Response(products));
     }
 
-    private record Response(string TokenResponse);
+    private record Response(List<Product> products);
 }

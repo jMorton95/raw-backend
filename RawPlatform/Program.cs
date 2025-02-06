@@ -14,6 +14,11 @@ builder
     .AddDatabase()
     .AddServices();
 
+if (builder.Environment.IsProduction())
+{
+    builder.Services.AddHostedService<ProductBackgroundService>();
+}
+
 builder.Services.AddAntiforgery();
 
 builder.Services.AddRazorComponents();
