@@ -18,7 +18,7 @@ public interface IProductEtl
 }
 
 
-public partial class ProductEtl(IOptions<ThirdParty> settings, DataContext db, HttpClient httpClient, IProductApiAuthenticator authenticator)
+public partial class ProductEtl(IOptions<ThirdParty> settings, DataContext db, HttpClient httpClient, IProductApiAuthenticator authenticator, DatabaseLoggingService logger)
     : IProductEtl
 {
    public async Task<bool> ProcessEbayProducts()
@@ -79,11 +79,24 @@ public partial class ProductEtl(IOptions<ThirdParty> settings, DataContext db, H
        
        var endpoint = $"{settings.Value.ProductQueryUrl}?limit=100&{settings.Value.ProductFilterString}&category_ids=12576";
        
-       var response = await httpClient.GetAsync(endpoint);
+       await logger.LogInformation<ProductEtl>($"Getting Products from: - {endpoint}");
+
+       try
+       {
+            var response = await httpClient.GetAsync(endpoint);
+            
+            await logger.LogInformation<ProductEtl>($"Returned {response.StatusCode}");
        
-       var result = await response.Content.ReadFromJsonAsync<EbaySearchResponse>();
-       
-       return result;
+            var result = await response.Content.ReadFromJsonAsync<EbaySearchResponse>();
+            
+            await logger.LogInformation<ProductEtl>($"Received {result?.ItemSummaries.Count} Products}");
+            return result;
+       }
+       catch (Exception ex)
+       {
+           await logger.LogError<ProductEtl>("Error occurred searching for products.", ex);
+           return null;
+       }
    }
    
    private List<ProductSearchResponse> ExtractProductsFromSearch(EbaySearchResponse ebaySearchResponse)
