@@ -89,7 +89,7 @@ public partial class ProductEtl(IOptions<ThirdParty> settings, DataContext db, H
        
             var result = await response.Content.ReadFromJsonAsync<EbaySearchResponse>();
             
-            await logger.LogInformation<ProductEtl>($"Received {result?.ItemSummaries.Count} Products}");
+            await logger.LogInformation<ProductEtl>($"Received {result?.ItemSummaries.Count} Products");
             return result;
        }
        catch (Exception ex)
