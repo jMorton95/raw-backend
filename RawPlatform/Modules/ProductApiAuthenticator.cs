@@ -62,7 +62,7 @@ public class ProductApiAuthenticator(
             
             var content = new Dictionary<string, string>{
                 {"grant_type", $"{_settings.GrantType}"},
-                {"scopes", $"{_settings.Scopes}"}
+                {"scope", $"{_settings.Scopes}"}
             };
         
             var form = new FormUrlEncodedContent(content);

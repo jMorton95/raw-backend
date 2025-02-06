@@ -1,6 +1,6 @@
 ﻿namespace RawPlatform.Config.Models;
 
-public class ThirdParty()
+public class ThirdParty
 {
     public string? ApiClientId { get; init; }
     public string? ApiClientSecret { get; init; }

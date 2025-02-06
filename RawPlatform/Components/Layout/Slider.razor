@@ -1,0 +1,125 @@
+﻿<div id="scroller" class="relative w-screen h-[calc(100vh_-_10rem)]">
+    <input type="radio" name="carousel" id="slide1" class="hidden slide1" checked />
+    <input type="radio" name="carousel" id="slide2" class="hidden slide2" />
+    <input type="radio" name="carousel" id="slide3" class="hidden slide3" />
+    <input type="radio" name="carousel" id="slide4" class="hidden slide4" />
+
+    <div class="overflow-hidden h-full">
+        <div class="flex transition-transform duration-300 ease-out h-full">
+            <div class="min-w-full h-full bg-cover bg-center slide1"
+                 style="background-image: url('1.webp')">
+                
+            </div>
+            <div class="min-w-full h-full bg-cover bg-center slide2"
+                 style="background-image: url('2.webp')">
+                
+            </div>
+            <div class="min-w-full h-full bg-cover bg-center slide3"
+                 style="background-image: url('3.webp')">
+               
+            </div>
+            <div class="min-w-full h-full bg-cover bg-center slide4"
+                 style="background-image: url('4.webp')">
+               
+            </div>
+        </div>
+    </div>
+
+    <div class="absolute inset-0 flex items-center justify-between p-4 pointer-events-none">
+        <div class="pointer-events-auto">
+            <label for="slide1" class="prev-arrow hidden">
+                <div class="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors">
+                    ←
+                </div>
+            </label>
+            <label for="slide2" class="prev-arrow hidden">
+                <div class="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors">
+                    ←
+                </div>
+            </label>
+            <label for="slide3" class="prev-arrow hidden">
+                <div class="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors">
+                    ←
+                </div>
+            </label>
+            <label for="slide4" class="prev-arrow hidden">
+                <div class="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors">
+                    ←
+                </div>
+            </label>
+        </div>
+
+        <div class="pointer-events-auto">
+            <label for="slide2" class="next-arrow hidden">
+                <div class="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors">
+                    →
+                </div>
+            </label>
+            <label for="slide3" class="next-arrow hidden">
+                <div class="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors">
+                    →
+                </div>
+            </label>
+            <label for="slide4" class="next-arrow hidden">
+                <div class="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors">
+                    →
+                </div>
+            </label>
+            <label for="slide1" class="next-arrow hidden">
+                <div class="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors">
+                    →
+                </div>
+            </label>
+        </div>
+    </div>
+
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3">
+        <label for="slide1" class="w-4 h-4 rounded-full bg-white cursor-pointer transition-all hover:scale-125"></label>
+        <label for="slide2" class="w-4 h-4 rounded-full bg-white cursor-pointer transition-all hover:scale-125"></label>
+        <label for="slide3" class="w-4 h-4 rounded-full bg-white cursor-pointer transition-all hover:scale-125"></label>
+        <label for="slide4" class="w-4 h-4 rounded-full bg-white cursor-pointer transition-all hover:scale-125"></label>
+    </div>
+</div>
+
+<style>
+    .flex {
+        will-change: transform;
+        backface-visibility: hidden;
+        transition: transform 0.5s ease-out;
+    }
+
+    #slide1:checked ~ div [for="slide1"],
+    #slide2:checked ~ div [for="slide2"],
+    #slide3:checked ~ div [for="slide3"],
+    #slide4:checked ~ div [for="slide4"] {
+        background-color: #3b82f6;
+        transform: scale(1.25);
+    }
+
+    #slide1:checked ~ .overflow-hidden .flex {
+        transform: translateX(0);
+    }
+
+    #slide2:checked ~ .overflow-hidden .flex {
+        transform: translateX(-100%);
+    }
+
+    #slide3:checked ~ .overflow-hidden .flex {
+        transform: translateX(-200%);
+    }
+    
+    #slide4:checked ~ .overflow-hidden .flex {
+        transform: translateX(-300%);
+    }
+
+    #slide1:checked ~ div .prev-arrow[for="slide4"],
+    #slide1:checked ~ div .next-arrow[for="slide2"],
+    #slide2:checked ~ div .prev-arrow[for="slide1"],
+    #slide2:checked ~ div .next-arrow[for="slide3"],
+    #slide3:checked ~ div .prev-arrow[for="slide2"],
+    #slide3:checked ~ div .next-arrow[for="slide4"],
+    #slide4:checked ~ div .prev-arrow[for="slide3"],
+    #slide4:checked ~ div .next-arrow[for="slide1"] {
+        display: block;
+    }
+</style>

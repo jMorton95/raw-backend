@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RawPlatform.Api.Endpoints;
+using RawPlatform.Api.Endpoints.Contact;
 using RawPlatform.Api.Endpoints.External;
+using RawPlatform.Api.Endpoints.Products;
 
 namespace RawPlatform.Api;
 
@@ -20,6 +22,12 @@ public static class EndpointRegistration
             .WithMetadata(new IgnoreAntiforgeryTokenAttribute())
                 .MapEndpoint<Challenge>()
                 .MapEndpoint<Notification>();
+
+        api.MapGroup("products/")
+            .MapEndpoint<GetAll>();
+
+        api.MapGroup("marketing/")
+            .MapEndpoint<Submit>();
     }
     
     private static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder app) where TEndpoint : IEndpoint

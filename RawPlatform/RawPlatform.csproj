@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <RootNamespace>RawPlatform</RootNamespace>
+        <DisableScopedCssBundling>true</DisableScopedCssBundling>
     </PropertyGroup>
     
     <ItemGroup>

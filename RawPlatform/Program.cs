@@ -1,5 +1,6 @@
 global using Microsoft.AspNetCore.Http.HttpResults;
 global using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using RawPlatform.Api;
 using RawPlatform.Components;
 using RawPlatform.Config;
@@ -14,6 +15,15 @@ builder
     .AddDatabase()
     .AddServices();
 
+if (builder.Environment.IsProduction())
+{
+    builder.Services.AddHostedService<ProductBackgroundService>();
+}
+else
+{
+    StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
+}
+
 builder.Services.AddAntiforgery();
 
 builder.Services.AddRazorComponents();
@@ -25,6 +35,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
     app.UseHsts();
 }
+
 
 app.MapStaticAssets();
 

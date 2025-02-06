@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using RawPlatform.Modules;
 
 namespace RawPlatform.Data;
 
@@ -27,27 +29,21 @@ public class CommerceToken : Entity
 
 public class MarketingUser : Entity
 {
-    [StringLength(100)]
+    [Required(ErrorMessage = "Name is required")]
+    [StringLength(100, ErrorMessage = "Name cannot be longer than 100 characters")]
     public string? EmailAddress { get; set; }
     
-    [StringLength(30)]
-    public string? FirstName { get; set; }
+    [Required(ErrorMessage = "Email is required")]
+    [StringLength(100, ErrorMessage = "Email Address cannot exceed 100 characters")]
+    public string? Name { get; set; }
     
-    [StringLength(30)]
-    public string? LastName { get; set; }
-    
-    [StringLength(50)]
+    [Required(ErrorMessage = "Phone number is required")]
+    [StringLength(50, ErrorMessage = "Phone number cannot exceed 50 characters")]
     public string? PhoneNumber { get; set; }
     
-    public ICollection<FormDetail>? FormDetails { get; set; }
-}
-
-public class FormDetail : Entity
-{
-    [StringLength(1000)]
-    public required string Message { get; set; }
-    
-    public MarketingUser MarketingUser { get; set; }
+    [Required(ErrorMessage = "Message is required")]
+    [StringLength(1000, ErrorMessage = "Message cannot exceed 1000 characters")]
+    public string? Message { get; set; }
 }
 
 public class LogEntry : Entity
@@ -82,12 +78,8 @@ public class Product : Entity
     public string ItemApiUrl { get; set; }
     
     public int EstimatedAlreadySold { get; set; }
-    
-    public ICollection<ProductImage> ProductImages { get; set; }
-}
 
-public class ProductImage : Entity
-{
-    public string Base64Image { get; set; }
-    public string ImageUrl { get; set; }
+    public string ProductImageUrl { get; set; }
+    
+    public string ProductImageBase64 { get; set; }
 }
