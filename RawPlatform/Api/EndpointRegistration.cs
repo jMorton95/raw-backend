@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RawPlatform.Api.Endpoints;
+using RawPlatform.Api.Endpoints.Contact;
 using RawPlatform.Api.Endpoints.External;
 using RawPlatform.Api.Endpoints.Products;
 
@@ -24,6 +25,9 @@ public static class EndpointRegistration
 
         api.MapGroup("products/")
             .MapEndpoint<GetAll>();
+
+        api.MapGroup("marketing/")
+            .MapEndpoint<Submit>();
     }
     
     private static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder app) where TEndpoint : IEndpoint
