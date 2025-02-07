@@ -9,17 +9,22 @@ public class ProductBackgroundService(IServiceProvider serviceProvider) : Backgr
         while (!stoppingToken.IsCancellationRequested)
         {
             await _semaphore.WaitAsync(stoppingToken);
-            
+            var scope = serviceProvider.CreateScope();
+
             try
             {
-                var scope = serviceProvider.CreateScope();
                 var service = scope.ServiceProvider.GetRequiredService<IProductEtl>();
                 var result = await service.ProcessEbayProducts();
                 await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                
+                var logger = scope.ServiceProvider.GetRequiredService<DatabaseLoggingService>();
+                await logger.LogError<ProductBackgroundService>("Error occurred within background service", ex);
+            }
+            finally
+            {
+                _semaphore.Release();
             }
         }
     }
