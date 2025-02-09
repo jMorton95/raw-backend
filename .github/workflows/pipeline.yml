@@ -60,7 +60,7 @@ jobs:
         with:
           name: rawplatform
           file: docker-stack.yml
-          host: platform.rawengineering.net
+          host: rawengineering.net
           user: deploy
           ssh_key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
           env_file: ./envfile
