@@ -13,18 +13,9 @@ services:
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       - "--entryPoints.tcp.address=:5432"
     ports:
-      - mode: host
-        protocol: tcp
-        published: 80
-        target: 80
-      - mode: host
-        protocol: tcp
-        published: 443
-        target: 443
-      - mode: host
-        protocol: tcp
-        published: 5432
-        target: 5432
+      - "80:80"
+      - "443:443"
+      - "5432:5432"
     volumes:
       - letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock
@@ -32,23 +23,19 @@ services:
       - "traefik.http.middlewares.redirect-www.redirectregex.regex=^www\\.(.*)"
       - "traefik.http.middlewares.redirect-www.redirectregex.replacement=https://$${1}"
       - "traefik.http.middlewares.redirect-www.redirectregex.permanent=true"
-      - "traefik.http.routers.www-router.rule=Host(`www.rawengineering.net`)"
-      - "traefik.http.routers.www-router.entrypoints=websecure"
-      - "traefik.http.routers.www-router.tls=true"
-      - "traefik.http.routers.www-router.tls.certresolver=myresolver"
-      - "traefik.http.routers.www-router.tls.domains[0].main=rawengineering.net"
-      - "traefik.http.routers.www-router.tls.domains[0].sans=www.rawengineering.net"
-      - "traefik.http.routers.www-router.middlewares=redirect-www"
 
   app:
     image: ghcr.io/jmorton95/raw-backend:${GIT_COMMIT_HASH:-latest}
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.app.loadbalancer.server.port=8080"
-      - "traefik.http.routers.app.rule=Host(`rawengineering.net`)"
+      - "traefik.http.routers.app.rule=Host(`rawengineering.net`, `www.rawengineering.net`)"
       - "traefik.http.routers.app.entrypoints=websecure"
       - "traefik.http.routers.app.tls=true"
       - "traefik.http.routers.app.tls.certresolver=myresolver"
+      - "traefik.http.routers.app.tls.domains[0].main=rawengineering.net"
+      - "traefik.http.routers.app.tls.domains[0].sans=www.rawengineering.net"
+      - "traefik.http.routers.app.middlewares=redirect-www"
     environment:
       - DatabaseSettings__Host=db
       - DatabaseSettings__Port=5432
