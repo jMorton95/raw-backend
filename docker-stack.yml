@@ -28,6 +28,19 @@ services:
     volumes:
       - letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+    - "traefik.http.middlewares.redirect-www.redirectregex.regex=^https://www\\.(.*)"
+    - "traefik.http.middlewares.redirect-www.redirectregex.replacement=https://$${1}"
+    - "traefik.http.middlewares.redirect-www.redirectregex.permanent=true"
+    - "traefik.http.routers.www-router.rule=Host(`www.rawengineering.net`)"
+    - "traefik.http.routers.www-router.entrypoints=websecure"
+    - "traefik.http.routers.www-router.tls=true"
+    - "traefik.http.routers.www-router.tls.certresolver=myresolver"
+    - "traefik.http.routers.www-router.middlewares=redirect-www"
+    - "traefik.http.routers.main-router.rule=Host(`rawengineering.net`)"
+    - "traefik.http.routers.main-router.entrypoints=websecure"
+    - "traefik.http.routers.main-router.tls=true"
+    - "traefik.http.routers.main-router.tls.certresolver=myresolver"
 
   app:
     image: ghcr.io/jmorton95/raw-backend:${GIT_COMMIT_HASH:-latest}
