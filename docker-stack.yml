@@ -36,6 +36,8 @@ services:
       - "traefik.http.routers.www-router.entrypoints=websecure"
       - "traefik.http.routers.www-router.tls=true"
       - "traefik.http.routers.www-router.tls.certresolver=myresolver"
+      - "traefik.http.routers.www-router.tls.domains[0].main=rawengineering.net"
+      - "traefik.http.routers.www-router.tls.domains[0].sans=www.rawengineering.net"
       - "traefik.http.routers.www-router.middlewares=redirect-www"
 
   app:
